@@ -104,4 +104,30 @@ def you_are_a_cube(cube):
     return cube == root ** 3
 
 -----------------------------------------------------------------------------------------------------------------------------------------
-**Task 5 Python Codewards** 
+**Task 5 Python Codewards** - 6 kyu: Find the unique number
+
+There is an array with some numbers. All numbers are equal except for one. Try to find it!
+
+find_uniq([ 1, 1, 1, 2, 1, 1 ]) == 2
+find_uniq([ 0, 0, 0.55, 0, 0 ]) == 0.55
+It’s guaranteed that array contains at least 3 numbers.
+
+The tests contain some very huge arrays, so think about performance.
+
+This is the first kata in series:
+
+Find the unique number (this kata)
+Find the unique string
+Find The Unique
+
+**Solution:** 
+def find_uniq(arr):
+    lst = [arr[0], arr[1], arr[2]]
+    unique = list(i for i in lst if lst.count(i) == 1)
+    s = list(set(arr))
+    if not unique:
+        s.append(arr[0])
+        return next(i for i in s if s.count(i) == 1)
+    else:
+        return next(i for i in lst if lst.count(i) == 1)
+----------------------------------------------------------------------------------------------------------------------------------------
