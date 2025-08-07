@@ -160,3 +160,19 @@ LEFT JOIN Outcomes o ON s.name = o.ship
 WHERE type = 'bc') t2
 ON t1.country = t2.country
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Найдите корабли, `сохранившиеся для будущих сражений`; т.е. выведенные из строя в одной битве (damaged), они участвовали в другой, произошедшей позже.
+
+**Solution:** 
+SELECT DISTINCT t1.ship FROM
+    (SELECT ship, date, result
+    FROM Outcomes o
+    JOIN Battles b ON o.battle = b.name
+    WHERE result = 'damaged') t1
+JOIN
+    (SELECT ship, date, result
+    FROM Outcomes o
+    JOIN Battles b ON o.battle = b.name
+    ) t2 
+ON t1.ship = t2.ship AND t1.date < t2.date
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
