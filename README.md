@@ -49,14 +49,41 @@ def find_it(seq):
 
 ### **Task 3 (6kyu)**
 
-[Ссылка на задачу](https://www.codewars.com/kata/54da5a58ea159efa38000836/train/python)
+[Ссылка на задачу](https://www.codewars.com/kata/523f5d21c841566fde000009/train/python)
 
 **Описание:**
-*** ----- ***
+*** Array.diff ***
+Implement a function that computes the difference between two lists. The function should remove all occurrences of elements from the first list (a) that are present in the second list (b). The order of elements in the first list should be preserved in the result.
+
+Examples
+If a = [1, 2] and b = [1], the result should be [2].
+
+If a = [1, 2, 2, 2, 3] and b = [2], the result should be [1, 3].
 
 
 **Решение:**
 ```python
+def array_diff(a, b):
+    arr = set(a) - set(b)
+    return [i for i in a + b if i in arr]
+```
+
+### **Task 4 (7kyu)**
+
+[Ссылка на задачу](https://www.codewars.com/kata/539ee3b6757843632d00026b/train/python)
+
+**Описание:**
+*** Find the capitals ***
+Write a function that takes a single non-empty string of only lowercase and uppercase ascii letters (word) as its argument, and returns an ordered list containing the indices of all capital (uppercase) letters in the string.
+
+Example (Input --> Output)
+"CodEWaRs" --> [0,3,4,6]
+
+
+**Решение:**
+```python
+def capitals(word):
+    return [i for i, ch in enumerate(word) if ch.isupper()]
 
 ```
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -96,7 +123,7 @@ SELECT ship
 FROM Outcomes
 WHERE ship LIKE 'R%'
 
-### **Task 2** 
+### **Task 3** 
 **Описание:**
 *** БД Корабли ***
 
@@ -113,6 +140,48 @@ SELECT ship
 FROM Outcomes
 WHERE length(ship) - length(replace(ship, ' ', '')) >= 2
 
+### **Task 4** 
+**Описание:**
+*** БД Корабли ***
+
+Для каждого корабля, участвовавшего в сражении при Гвадалканале (Guadalcanal), вывести название, водоизмещение и число орудий.
+
+**Решение:**
+
+SELECT  o.ship as ship,
+        c.displacement,
+        c.numGuns
+FROM Outcomes o
+LEFT JOIN Ships s ON o.ship = s.name
+LEFT JOIN Classes c ON c.class = COALESCE(s.class, o.ship)
+WHERE o.battle = 'Guadalcanal'
+
+### **Task 5** 
+**Описание:**
+*** БД Корабли ***
+
+Определить страны, которые потеряли в сражениях все свои корабли.
+
+**Решение:**
+
+WITH all_ships AS (
+    SELECT country, name
+    FROM Classes c
+    JOIN Ships s ON c.class = s.class
+    UNION
+    SELECT country, ship
+    FROM Classes c
+    JOIN Outcomes o ON c.class = o.ship
+    )
+
+SELECT DISTINCT country
+FROM all_ships
+WHERE country NOT IN (SELECT country
+                      FROM all_ships
+                      WHERE name NOT IN (SELECT ship
+                                         FROM Outcomes
+                                         WHERE result = 'sunk')
+                      )
 
 
 
